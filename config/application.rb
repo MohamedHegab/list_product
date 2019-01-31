@@ -32,6 +32,9 @@ module ListProduct
       end
     end
 
+    config.assets.paths << Rails.root.join('vendor', 'assets')
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'fonts')
+
     # Don't generate system test files.
     config.generators.system_tests = nil
   end
