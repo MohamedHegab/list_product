@@ -33,6 +33,7 @@ group :test do
   gem 'database_cleaner'
   gem 'guard-rspec', '4.4.2'
   gem 'shoulda'
+  gem 'rails-controller-testing'
   gem 'simplecov', :require => false
 end
 
