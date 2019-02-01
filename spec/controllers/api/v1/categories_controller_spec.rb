@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CategoriesController, type: :controller do
+RSpec.describe Api::V1::CategoriesController, type: :controller, format: :api do
   describe 'GET #show' do
     before(:each) do
       @category = FactoryBot.create :category
@@ -9,7 +9,7 @@ RSpec.describe CategoriesController, type: :controller do
 
     it 'returns the information about the category on a hash' do
       category_response = json_response
-      expect(category_response[:data][:name]).to eql @category.name
+      expect(category_response[:data][:attributes][:name]).to eql @category.name
     end
 
     it { should respond_with 200 }
@@ -24,7 +24,7 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'renders the json representation for the category record just created' do
         category_response = json_response
-        expect(category_response[:data][:name]).to eql @category_attributes[:name]
+        expect(category_response[:data][:attributes][:name]).to eql @category_attributes[:name]
       end
 
       it { should respond_with 201 }
@@ -38,15 +38,15 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'renders an errors json' do
         category_response = json_response
-        expect(category_response).to have_key(:code)
+        expect(category_response).to have_key(:errors)
       end
 
       it 'renders the json errors on why the category could not be created' do
         category_response = json_response
-        expect(category_response[:data][:validation_errors][0][:messages][0]).to include "can't be blank"
+        expect(category_response[:errors][:name]).to include "can't be blank"
       end
 
-      it { should respond_with 200 }
+      it { should respond_with 422 }
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe CategoriesController, type: :controller do
 
       it 'renders the json representation for the updated user' do
         category_response = json_response
-        expect(category_response[:data][:name]).to eql @name
+        expect(category_response[:data][:attributes][:name]).to eql @name
       end
 
       it { should respond_with 200 }
@@ -75,7 +75,7 @@ RSpec.describe CategoriesController, type: :controller do
       end
       it '' do
         expect {
-          delete :destroy, params: {id: @category.id}
+          delete :destroy, params: { id: @category.id }
         }.to change(Category, :count).by(-1)
       end
     end

@@ -23,7 +23,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Request::JsonHelpers, type: :controller
   config.include Request::HeadersHelpers, type: :controller
-  config.before(:each, type: :controller) do
+  config.before(:each, type: :controller, format: :api) do
     include_default_accept_headers
   end
   config.infer_spec_type_from_file_location!

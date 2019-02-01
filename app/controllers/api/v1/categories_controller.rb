@@ -1,43 +1,38 @@
-class Api::V1::CategoriesController < ApplicationController
+class Api::V1::CategoriesController < Api::BaseController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
-  # GET /categories
-  # GET /categories.json
+  # GET /api/v1/categories
   def index
     @categories = Category.all
     render json: @categories, each_serializer: CategorySerializer
   end
 
-  # GET /categories/1
-  # GET /categories/1.json
+  # GET /api/v1/categories/1
   def show
-    render json: @category
+    json_response(@category)
   end
 
-  # POST /categories
-  # POST /categories.json
+  # POST /api/v1/categories
   def create
     @category = Category.new(category_params)
 
     if @category.save
-      render json: @category, status: :created
+      json_response(@category, :created)
     else
-      render json: @category.errors, status: :unprocessable_entity
+      json_response({ errors: @category.errors }, :unprocessable_entity)
     end
   end
 
-  # PATCH/PUT /categories/1
-  # PATCH/PUT /categories/1.json
+  # PATCH/PUT /api/v1/categories/1
   def update
     if @category.update(category_params)
       render json: @category, status: :ok, location: @category
     else
-      render json: @category.errors, status: :unprocessable_entity
+      render json: { errors: @category.errors }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /categories/1
-  # DELETE /categories/1.json
+  # DELETE /api/v1/categories/1
   def destroy
     @category.destroy
     head :no_content
