@@ -26,9 +26,9 @@ class Api::V1::CategoriesController < Api::BaseController
   # PATCH/PUT /api/v1/categories/1
   def update
     if @category.update(category_params)
-      render json: @category, status: :ok, location: @category
+      json_response(@category)
     else
-      render json: { errors: @category.errors }, status: :unprocessable_entity
+      json_response({ errors: @category.errors }, :unprocessable_entity)
     end
   end
 
